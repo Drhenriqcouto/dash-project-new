@@ -3,4 +3,4 @@ pandas
 yfinance
 numpy
 xlsxwriter
-
+distutils
