@@ -2,3 +2,5 @@ pandas_datareader
 pandas
 yfinance
 numpy
+xlsxwriter
+
