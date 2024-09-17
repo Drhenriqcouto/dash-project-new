@@ -1,0 +1,15 @@
+pandas_datareader 
+pandas
+yfinance
+numpy 
+matplotlib.pyplot
+openpyxl 
+Workbook
+openpyxl.utils.dataframe 
+dataframe_to_rows
+datetime 
+datetime
+timedelta
+streamlit
+os
+csv
