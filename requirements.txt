@@ -6,3 +6,4 @@ xlsxwriter
 openpyxl
 datetime
 matplotlib
+streamlit>=1.14.0
