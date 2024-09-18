@@ -277,7 +277,7 @@ elif opcao == "Análise":
     st.title("Monte a sua Análise")
 
     # Carregar a lista de ativos
-    codigos = pd.read_excel('listadas.xlsx')
+    codigos = pd.read_excel('listadas.csv')
     codigos['Simbol'] = codigos['codigo'] + '.SA'
 
     # Campo para o usuário selecionar o ativo
