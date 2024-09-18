@@ -278,7 +278,8 @@ elif opcao == "Análise":
 
     # Carregar a lista de ativos
     codigos = pd.read_csv('listadas.csv')
-    codigos['Simbol'] = codigos['codigo'] + '.SA'
+    codigos['Simbol'] = codigos['Ticker'] + '.SA'
+    
 
     # Campo para o usuário selecionar o ativo
     ativo_selecionado = st.selectbox(
