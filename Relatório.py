@@ -1,3 +1,17 @@
+# ========================================================
+# hTradingBacktest - Ferramenta de Backtest para o Mercado de Ações
+# 
+# Copyright © Henrique Couto Toledo. Todos os direitos reservados.
+# 
+# Este código é uma ferramenta de backtest para análise de estratégias
+# no mercado de ações, e está sujeito a proteção de direitos autorais.
+# Nenhuma parte deste código pode ser reproduzida ou distribuída sem
+# permissão expressa do autor.
+#
+# Criado por: Henrique Couto Toledo
+# ========================================================
+
+
 from pandas_datareader import data as web
 import pandas as pd
 import yfinance as yf
@@ -263,7 +277,7 @@ elif opcao == "Análise":
     st.title("Monte a sua Análise")
 
     # Carregar a lista de ativos
-    codigos = pd.read_excel('selecao.xlsx')
+    codigos = pd.read_excel('listadas.xlsx')
     codigos['Simbol'] = codigos['codigo'] + '.SA'
 
     # Campo para o usuário selecionar o ativo

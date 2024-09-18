@@ -1,3 +1,15 @@
+# ========================================================
+# hTradingBacktest - Ferramenta de Backtest para o Mercado de Ações
+# 
+# Copyright © Henrique Couto Toledo. Todos os direitos reservados.
+# 
+# Este código é uma ferramenta de backtest para análise de estratégias
+# no mercado de ações, e está sujeito a proteção de direitos autorais.
+# Nenhuma parte deste código pode ser reproduzida ou distribuída sem
+# permissão expressa do autor.
+#
+# Criado por: Henrique Couto Toledo
+# ========================================================
 pandas_datareader 
 pandas
 yfinance
