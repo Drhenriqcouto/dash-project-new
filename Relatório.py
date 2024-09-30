@@ -239,8 +239,6 @@ elif opcao == "Relatório":
     st.title("Relatório de Resultados")
     exibir_relatorio(df_resultados)
 
-import yfinance as yf
-
 elif opcao == "Monte a sua Operação":
     st.title("Monte a sua Operação")
     
