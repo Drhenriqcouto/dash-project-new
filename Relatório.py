@@ -245,8 +245,11 @@ elif opcao == "Monte a sua Operação":
     # Lista suspensa com os ativos disponíveis
     ativo = st.selectbox("Selecione o Ativo", df_resultados['Nome do ativo'].unique())
     
-    # Campo para preencher o preço atual
-    preco_atual = st.number_input("Preço Atual", min_value=0.0, format="%.2f")
+    # Buscar o preço de fechamento do último dia para o ativo selecionado
+    preco_fechamento = df_resultados.loc[df_resultados['Nome do ativo'] == ativo, 'Preço de fechamento'].values[-1]
+    
+    # Campo para preencher o preço atual com o preço de fechamento do último dia
+    preco_atual = st.number_input("Preço Atual", value=float(preco_fechamento), min_value=0.0, format="%.2f")
     
     # Lista suspensa para selecionar o percentual
     percentual = st.selectbox("Selecione o Percentual", [0.01, 0.02, 0.03, 0.04, 0.05])
@@ -262,6 +265,7 @@ elif opcao == "Monte a sua Operação":
             st.write(f"### Preço de Entrada Calculado: R$ {preco_entrada:.2f}")
         else:
             st.write("Por favor, insira um preço atual válido.")
+
 
 elif opcao == "Rastreador":
     st.title("Última Análise")
