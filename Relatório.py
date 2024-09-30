@@ -239,15 +239,27 @@ elif opcao == "Relatório":
     st.title("Relatório de Resultados")
     exibir_relatorio(df_resultados)
 
+import yfinance as yf
+
 elif opcao == "Monte a sua Operação":
     st.title("Monte a sua Operação")
     
     # Lista suspensa com os ativos disponíveis
     ativo = st.selectbox("Selecione o Ativo", df_resultados['Nome do ativo'].unique())
     
-    # Buscar o preço de fechamento do último dia para o ativo selecionado
-    preco_fechamento = df_resultados.loc[df_resultados['Nome do ativo'] == ativo, 'Preço de fechamento'].values[-1]
+    # Ticker do ativo no formato esperado pelo yfinance
+    ticker = ativo  # Supondo que o nome do ativo já seja o ticker. Ajuste se necessário.
+
+    # Obter dados do ativo utilizando yfinance
+    dados_ativo = yf.Ticker(ticker)
+    historico = dados_ativo.history(period="1d")  # Obter dados do último dia
     
+    # Obter o preço de fechamento do último dia
+    if not historico.empty:
+        preco_fechamento = historico['Close'][-1]
+    else:
+        preco_fechamento = 0.0  # Caso não tenha dados disponíveis
+
     # Campo para preencher o preço atual com o preço de fechamento do último dia
     preco_atual = st.number_input("Preço Atual", value=float(preco_fechamento), min_value=0.0, format="%.2f")
     
@@ -265,6 +277,7 @@ elif opcao == "Monte a sua Operação":
             st.write(f"### Preço de Entrada Calculado: R$ {preco_entrada:.2f}")
         else:
             st.write("Por favor, insira um preço atual válido.")
+
 
 
 elif opcao == "Rastreador":
