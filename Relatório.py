@@ -250,7 +250,7 @@ elif opcao == "Monte a sua Operação":
 
     # Obter dados do ativo utilizando yfinance
     dados_ativo = yf.Ticker(ticker)
-    historico = dados_ativo.history(period="1d")  # Obter dados do último dia
+    historico = dados_ativo.history(period="2d")  # Obter dados do último dia
     
     # Obter o preço de fechamento do último dia
     if not historico.empty:
