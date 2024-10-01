@@ -84,6 +84,12 @@ def calcular_preco_entrada(preco_atual, percentual, tipo_entrada):
 def rastrear():
     listadas = pd.read_csv('listadas.csv')
     melhores = pd.read_excel('resultados_trading.xlsx')
+    
+    # Taxa Selic anual (exemplo de 12,75%)
+    selic_anual = 0.1275
+
+    # Converter a taxa Selic anual para a base diária
+    selic_diaria = (1 + selic_anual) ** (1 / 252) - 1
 
     listadas['codigos'] = listadas['Ticker'] + '.SA' 
     codigos = listadas['codigos'].tolist()
@@ -188,41 +194,26 @@ def rastrear():
                                 'Ajuste': row['A1']
                             })
 
-              
+                # Cria o DataFrame com os trades e calcula o Sharpe Ratio
+                df_trades_raw = pd.DataFrame(listadetrades)
+                if not df_trades_raw.empty:
+                    df_trades1 = df_trades_raw
 
-                    # Lista de trades fornecida
-                    df_trades_raw = pd.DataFrame(listadetrades)
+                    x = ((df_trades1['Resultado'] > 0) == True).sum()
+                    y = ((df_trades1['Resultado'] > 0) == False).sum()
+                    gain = round((x / (x + y)) * 100, 2)
+                    loss = round((y / (x + y)) * 100, 2)
 
-                    # Verifica se o DataFrame não está vazio
-                    if not df_trades_raw.empty:
-                        df_trades1 = df_trades_raw
+                    df_trades1['ret_acumulado'] = df_trades1['Resultado'].cumsum()
+                    capital_inicial = 100
+                    df_trades1['ret_acumulado'] += capital_inicial
+                    df_trades1['max_cum'] = df_trades1['ret_acumulado'].cummax()
+                    df_trades1['min_cum'] = df_trades1['ret_acumulado'].cummin()
+                    draw = df_trades1['drawdown'] = df_trades1['ret_acumulado'] / df_trades1['max_cum'] - 1
+                    drawdown = draw.min()
 
-                        # Cálculo de ganhos e perdas
-                        x = ((df_trades1['Resultado'] > 0) == True).sum()
-                        y = ((df_trades1['Resultado'] > 0) == False).sum()
-                        gain = round((x / (x + y)) * 100, 2)
-                        loss = round((y / (x + y)) * 100, 2)
-
-                        # Cálculo do retorno acumulado, drawdown e drawdown máximo
-                        df_trades1['ret_acumulado'] = df_trades1['Resultado'].cumsum()
-                        capital_inicial = 100
-                        df_trades1['ret_acumulado'] += capital_inicial
-                        df_trades1['max_cum'] = df_trades1['ret_acumulado'].cummax()
-                        df_trades1['min_cum'] = df_trades1['ret_acumulado'].cummin()
-                        draw = df_trades1['drawdown'] = df_trades1['ret_acumulado'] / df_trades1['max_cum'] - 1
-                        drawdown = draw.min()
-
-                        # Taxa Selic anual e conversão para base diária (exemplo 12,75% ao ano)
-                        selic_anual = 0.1275
-                        selic_diaria = (1 + selic_anual) ** (1 / 252) - 1
-
-                        # Cálculo do Índice de Sharpe ajustado com a taxa Selic diária
-                        retorno_medio = df_trades1['Resultado'].groupby(df_trades1.index).sum().mean()
-                        desvio_padrao = df_trades1['Resultado'].groupby(df_trades1.index).sum().std()
-
-                        # Fórmula do Sharpe ajustada
-                        sharpe = (retorno_medio - selic_diaria) / desvio_padrao
-
+                    sharpe = df_trades1['Resultado'].groupby(df_trades1.index).sum().mean() / (
+                                df_trades1['Resultado'].groupby(df_trades1.index).sum().std())
 
                     resultados.append({
                         'Nome do ativo': ativo,
