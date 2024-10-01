@@ -84,12 +84,6 @@ def calcular_preco_entrada(preco_atual, percentual, tipo_entrada):
 def rastrear():
     listadas = pd.read_csv('listadas.csv')
     melhores = pd.read_excel('resultados_trading.xlsx')
-    
-    # Taxa Selic anual (exemplo de 12,75%)
-    selic_anual = 0.1275
-
-    # Converter a taxa Selic anual para a base diária
-    selic_diaria = (1 + selic_anual) ** (1 / 252) - 1
 
     listadas['codigos'] = listadas['Ticker'] + '.SA' 
     codigos = listadas['codigos'].tolist()
