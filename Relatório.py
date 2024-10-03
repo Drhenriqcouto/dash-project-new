@@ -348,7 +348,7 @@ elif opcao == "Análise":
         loss = round((y / (x + y)) * 100, 2)
         lucro = (resultado['Resultado'].sum())
         st.markdown(f"""
-                ### Ativo: **{ativo_selecionado}**
+                ### Avaliação geral do ativo: **{ativo_selecionado}**
                 
                 - **Percentual de acerto:** {gain}%
                 - **Percentual de erro:** {loss}%
