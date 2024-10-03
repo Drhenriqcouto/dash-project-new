@@ -359,7 +359,7 @@ elif opcao == "Análise":
                 - **Percentual de acerto:** {gain}%
                 - **Percentual de erro:** {loss}%
                 - **Lucro: R$** {round(resultado['Resultado'].sum(),2)}
-                - **Capital final:** {round(capital_inicial+lucro,2)}
+                - **Capital final: R$** {round(capital_inicial+lucro,2)}
                 
                 ---
             """)
