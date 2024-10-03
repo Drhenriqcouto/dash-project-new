@@ -322,7 +322,7 @@ elif opcao == "Análise":
    
     if st.button("Executar Análise"):
         resultado = executar_operacao(valor, tipo_operacao, periodo, ativo_selecionado)
-        
+        capital_inicial = 1000
         # Exibir os resultados
         st.write("Resultado da Análise:")
         st.dataframe(resultado)
@@ -346,8 +346,17 @@ elif opcao == "Análise":
         y = ((resultado['Resultado'] > 0) == False).sum()
         gain = round((x / (x + y)) * 100, 2)
         loss = round((y / (x + y)) * 100, 2)
-        st.write(f"Percentual de acerto: {gain}%")
-        st.write(f"Percentual de erro: {loss}%")
+        lucro = (resultado['Resultado'].sum())
+        st.markdown(f"""
+                ### Ativo: **{ativo_selecionado}**
+                
+                - **Percentual de acerto:** {gain}%
+                - **Percentual de erro:** {loss}%
+                - **Lucro:** {resultado['Resultado'].sum()}%
+                - **Capital final:** {round(capital_inicial+lucro,2)}
+                
+                ---
+            """)
 
         # Avaliação da estratégia
         resultado['ret_acumulado'] = resultado['Resultado'].cumsum()
@@ -355,7 +364,6 @@ elif opcao == "Análise":
         st.line_chart(resultado['ret_acumulado'])
 
         # DrawDown
-        capital_inicial = 1000
         resultado['ret_acumulado'] += capital_inicial
         lucro = round(resultado['Resultado'].sum(), 2)
         drawdown = resultado['ret_acumulado'] - resultado['ret_acumulado'].cummax()
