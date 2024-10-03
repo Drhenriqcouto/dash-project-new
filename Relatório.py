@@ -329,17 +329,23 @@ elif opcao == "Análise":
 
         # Calcular e exibir o pior dia
         pior_dia = round(resultado['Resultado'].min(), 2)
-        st.write(f"Pior dia: R$ {pior_dia}")
 
         # Calcular e exibir o melhor dia
         melhor_dia = round(resultado['Resultado'].max(), 2)
-        st.write(f"Melhor dia: R$ {melhor_dia}")
 
         # Calcular e exibir o ganho médio
         ganho_medio = pd.DataFrame()
         ganho_medio['Ganho Médio'] = (resultado['Resultado'] / (resultado['price'] * 10))
         valor = round(ganho_medio['Ganho Médio'].mean() * 100, 2)
-        st.write(f"Ganho médio: {valor}% ao dia")
+        st.markdown(f"""
+                ### Dados gerais
+            
+                - **Ganho médio:** {valor}%
+                - **Melhor dia: R$** {melhor_dia}
+                - **Pior dia: R$** {pior_dia}
+                
+                ---
+            """)
 
         # Percentual de Gain e Loss
         x = ((resultado['Resultado'] > 0) == True).sum()
