@@ -244,6 +244,7 @@ def rastrear():
                     loss = round((y / (x + y)) * 100, 2)
 
                     df_trades1['ret_acumulado'] = df_trades1['Resultado'].cumsum()
+                    tamanho = df_trades1.shape[0]
                     capital_inicial = 100
                     df_trades1['ret_acumulado'] += capital_inicial
                     df_trades1['max_cum'] = df_trades1['ret_acumulado'].cummax()
@@ -256,6 +257,7 @@ def rastrear():
 
                     resultados.append({
                         'Nome do ativo': ativo,
+                        'Quantidade de operações':tamanho,
                         'Valor': valor,
                         'Contador': contador,
                         'Índice Sharpe': sharpe,
