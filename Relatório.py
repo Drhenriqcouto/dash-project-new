@@ -34,10 +34,10 @@ df_resultados = pd.read_excel('resultados_trading.xlsx')
 # Função para exibir o relatório dos melhores resultados
 def exibir_relatorio(df):
     melhores_resultados = df[
-        (df['Índice Sharpe'] > 0.5) & (df['Ganho (%)']) >= 75 & (df['Quantidade de operações']) >= 60 
+        (df['Índice Sharpe'] > 0.5) & (df['Ganho (%)']) >= 75 & (df['Quantidade de operações']) >= 30 
     ]
     pessimos_resultados = df[
-        (df['Índice Sharpe'] < - 0.5) & (df['Ganho (%)'] <= 25) & (df['Quantidade de operações'])>= 60 
+        (df['Índice Sharpe'] < - 0.5) & (df['Ganho (%)'] <= 25) & (df['Quantidade de operações'])>= 30 
     ]
 
     if not melhores_resultados.empty:
