@@ -176,7 +176,7 @@ def rastrear():
         for valor in valores:
             for contador in contadores:
                 listadetrades = []
-                coma = df.tail(600).iterrows()
+                coma = df.tail(500).iterrows()
 
                 for idx, row in coma:
                     entrada_comprada = row['Abertura'] - (row['Abertura'] * valor)
