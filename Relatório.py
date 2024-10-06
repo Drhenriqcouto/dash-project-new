@@ -34,9 +34,12 @@ df_resultados = pd.read_excel('resultados_trading.xlsx')
 # Função para exibir o relatório dos melhores resultados
 def exibir_relatorio(df):
     melhores_resultados = df[
-        (df['Índice Sharpe'] > 0.4) & (df['Índice Sharpe'] < 1) & (df['Ganho (%)'] > 75)
+        (df['Índice Sharpe'] > 0.5) & (df['Ganho (%)'] >= 75)
     ]
-    
+    pessimos_resultados = df[
+        (df['Índice Sharpe'] < - 0.5) & (df['Ganho (%)'] <= 25)
+    ]
+
     if not melhores_resultados.empty:
         st.write("## Melhores Resultados")
         
@@ -69,6 +72,42 @@ def exibir_relatorio(df):
             """)
     else:
         st.write("Nenhum resultado atende aos critérios de seleção.")
+    
+    if not melhores_resultados.empty:
+        st.write("## Piores Resultados")
+        
+        for _, row in pessimos_resultados.iterrows():
+            percentual_acerto = row['Ganho (%)']
+            percentual_erro = 100 - percentual_acerto
+            tipo_operacao = ""
+            if row['Contador'] == 0:
+                tipo_operacao = "Compra na baixa"
+            elif row['Contador'] == 1:
+                tipo_operacao = "Venda na alta"
+            elif row['Contador'] == 2:
+                tipo_operacao = "Venda na baixa"
+            elif row['Contador'] == -2:
+                tipo_operacao = "Compra na alta"
+            
+            nivel_percentual = row['Valor'] * 100
+            
+            # Exibindo cada resultado com formatação mais profissional
+            st.markdown(f"""
+                ### Ativo: **{row['Nome do ativo']}**
+                
+                - **Índice Sharpe:** {row['Índice Sharpe']:.2f}
+                - **Ganho (%):** {percentual_acerto:.2f}%
+                - **Perda (%):** {percentual_erro:.2f}%
+                - **Tipo de operação:** {tipo_operacao}
+                - **Nível percentual de compra ou venda:** {nivel_percentual:.2f}%
+                
+                ---
+            """)
+    else:
+        st.write("Nenhum resultado atende aos critérios de seleção.")
+
+
+
 
 # Função para calcular o preço de entrada com base no tipo de operação
 def calcular_preco_entrada(preco_atual, percentual, tipo_entrada):
@@ -97,10 +136,10 @@ def rastrear():
     data_atual = datetime.now().strftime('%Y-%m-%d')
     # Código 2 que faz o rastreamento dos ativos e cálculos
     # Definindo o intervalo de valores para a variável valor
-    valores = [0.01, 0.02, 0.03, 0.04, 0.05]
+    valores = [0.01, 0.015, 0.02, 0.025, 0.03, 0.035, 0.04, 0.045, 0.05]
     # Definindo os valores possíveis para a variável contador
     contadores = [0, 1, 2, -2]
-    bet_size = 100
+    bet_size = 20
 
     # Listas para armazenar os resultados
     resultados = []
@@ -137,7 +176,7 @@ def rastrear():
         for valor in valores:
             for contador in contadores:
                 listadetrades = []
-                coma = df.tail(500).iterrows()
+                coma = df.tail(600).iterrows()
 
                 for idx, row in coma:
                     entrada_comprada = row['Abertura'] - (row['Abertura'] * valor)
@@ -146,7 +185,7 @@ def rastrear():
                     entrada_vendida1 = row['Abertura'] - (row['Abertura'] * valor)
 
                     if contador == 0:
-                        if ((entrada_comprada - row['Mínima']) >= 0) and (row['A1'] < 0):
+                        if ((entrada_comprada - row['Mínima']) >= 0):
                             resultado = (row['Fechamento'] - entrada_comprada) * bet_size
                             listadetrades.append({
                                 'price': row['Fechamento'],
@@ -158,7 +197,7 @@ def rastrear():
                                 'Ajuste': row['A1']
                             })
                     elif contador == 1:
-                        if (entrada_vendida <= row['Máxima']) and (row['A1'] > 0):
+                        if ((entrada_vendida - row['Máxima'])<=0):
                             resultado = (entrada_vendida - row['Fechamento']) * bet_size
                             listadetrades.append({
                                 'price': row['Fechamento'],
@@ -170,7 +209,7 @@ def rastrear():
                                 'Ajuste': row['A1']
                             })
                     elif contador == 2:
-                        if ((entrada_vendida1 - row['Mínima']) >= 0) and (row['A1'] < 0):
+                        if ((entrada_vendida1 - row['Mínima']) >= 0):
                             resultado = (entrada_vendida1 - row['Fechamento']) * bet_size
                             listadetrades.append({
                                 'price': row['Fechamento'],
@@ -182,7 +221,7 @@ def rastrear():
                                 'Ajuste': row['A1']
                             })
                     elif contador == -2:
-                        if (entrada_comprada1 - row['Máxima']) <= 0:
+                        if ((entrada_comprada1 - row['Máxima']) <= 0):
                             resultado = (row['Fechamento'] - entrada_comprada1) * bet_size
                             listadetrades.append({
                                 'price': row['Fechamento'],
@@ -260,7 +299,7 @@ elif opcao == "Monte a sua Operação":
     
     # Obter o preço de fechamento do último dia
     if not historico.empty:
-        preco_fechamento = historico['Close'][-1]
+        preco_fechamento = historico['Open']
     else:
         preco_fechamento = 0.0  # Caso não tenha dados disponíveis
 
@@ -268,7 +307,7 @@ elif opcao == "Monte a sua Operação":
     preco_atual = st.number_input("Preço Atual", value=float(preco_fechamento), min_value=0.0, format="%.2f")
     
     # Lista suspensa para selecionar o percentual
-    percentual = st.selectbox("Selecione o Percentual", [0.01, 0.02, 0.03, 0.04, 0.05])
+    percentual = st.selectbox("Selecione o Percentual", [0.01, 0.015, 0.02, 0.025, 0.03, 0.035, 0.04, 0.045, 0.05])
     
     # Lista suspensa para selecionar o tipo de entrada
     tipo_entrada = st.selectbox("Selecione o Tipo de Entrada", 
@@ -322,7 +361,7 @@ elif opcao == "Análise":
    
     if st.button("Executar Análise"):
         resultado = executar_operacao(valor, tipo_operacao, periodo, ativo_selecionado)
-        capital_inicial = 1000
+        capital_inicial = 100
         # Exibir os resultados
         st.write("Resultado da Análise:")
         st.dataframe(resultado)
