@@ -299,12 +299,12 @@ elif opcao == "Monte a sua Operação":
     
     # Obter o preço de fechamento do último dia
     if not historico.empty:
-        preco_fechamento = historico['Open']
+        preco_abertura = historico['Open'][-1]
     else:
-        preco_fechamento = 0.0  # Caso não tenha dados disponíveis
+        preco_abertura = 0.0  # Caso não tenha dados disponíveis
 
     # Campo para preencher o preço atual com o preço de fechamento do último dia
-    preco_atual = st.number_input("Preço Atual", value=float(preco_fechamento), min_value=0.0, format="%.2f")
+    preco_atual = st.number_input("Preço Atual", value=float(preco_abertura), min_value=0.0, format="%.2f")
     
     # Lista suspensa para selecionar o percentual
     percentual = st.selectbox("Selecione o Percentual", [0.01, 0.015, 0.02, 0.025, 0.03, 0.035, 0.04, 0.045, 0.05])
