@@ -34,10 +34,10 @@ df_resultados = pd.read_excel('resultados_trading.xlsx')
 # Função para exibir o relatório dos melhores resultados
 def exibir_relatorio(df):
     melhores_resultados = df[
-        (df['Índice Sharpe'] > 0.5) & (df['Ganho (%)'] >= 75)
+        (df['Índice Sharpe'] > 0.5) & (df['Ganho (%)']) >= 75 & (df['Quantidade de operações'] >= 60 )
     ]
     pessimos_resultados = df[
-        (df['Índice Sharpe'] < - 0.5) & (df['Ganho (%)'] <= 25)
+        (df['Índice Sharpe'] < - 0.5) & (df['Ganho (%)'] <= 25) & (df['Quantidade de operações'] >= 60 )
     ]
 
     if not melhores_resultados.empty:
@@ -123,12 +123,6 @@ def calcular_preco_entrada(preco_atual, percentual, tipo_entrada):
 def rastrear():
     listadas = pd.read_csv('listadas.csv')
     melhores = pd.read_excel('resultados_trading.xlsx')
-    
-    # Taxa Selic anual (exemplo de 12,75%)
-    selic_anual = 0.1275
-
-    # Converter a taxa Selic anual para a base diária
-    selic_diaria = (1 + selic_anual) ** (1 / 252) - 1
 
     listadas['codigos'] = listadas['Ticker'] + '.SA' 
     codigos = listadas['codigos'].tolist()
@@ -136,7 +130,7 @@ def rastrear():
     data_atual = datetime.now().strftime('%Y-%m-%d')
     # Código 2 que faz o rastreamento dos ativos e cálculos
     # Definindo o intervalo de valores para a variável valor
-    valores = [0.01, 0.015, 0.02, 0.025, 0.03, 0.035, 0.04, 0.045, 0.05]
+    valores = [round(x, 3) for x in np.arange(0, 0.051, 0.001)]
     # Definindo os valores possíveis para a variável contador
     contadores = [0, 1, 2, -2]
     bet_size = 20
@@ -309,7 +303,8 @@ elif opcao == "Monte a sua Operação":
     preco_atual = st.number_input("Preço Atual", value=float(preco_abertura), min_value=0.0, format="%.2f")
     
     # Lista suspensa para selecionar o percentual
-    percentual = st.selectbox("Selecione o Percentual", [0.01, 0.015, 0.02, 0.025, 0.03, 0.035, 0.04, 0.045, 0.05])
+    valores = [round(x, 3) for x in np.arange(0, 0.051, 0.001)]
+    percentual = st.selectbox("Selecione o Percentual", valores)
     
     # Lista suspensa para selecionar o tipo de entrada
     tipo_entrada = st.selectbox("Selecione o Tipo de Entrada", 
