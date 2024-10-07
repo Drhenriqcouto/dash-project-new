@@ -207,7 +207,7 @@ elif opcao == "Monte a sua Operação":
     
     # Obter o preço de fechamento do último dia
     if not historico.empty:
-        preco_abertura = historico['Open'][-1]
+        preco_abertura = historico['Close'][-1]
     else:
         preco_abertura = 0.0  # Caso não tenha dados disponíveis
 
