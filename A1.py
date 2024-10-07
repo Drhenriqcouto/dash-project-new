@@ -60,25 +60,25 @@ def executar_operacao(valor, tipo_operacao, periodo, ativo_selecionado):
         entrada_vendida1 = row['Fechamento anterior'] - (row['Fechamento anterior']*valor)
         
         # Lógica de operações baseada no tipo
-        if contador == 0 and (entrada_comprada - row['Mínima']) >= 0:
+        if contador == 0 and ((entrada_comprada - row['Mínima']) >= 0):
             resultado = (row['Fechamento'] - entrada_comprada) * bet_size
             listadetrades.append({
                 'price': row['Fechamento'], 'time': idx, 'kind': 'buy',
                 'quantidade': bet_size, 'Resultado': resultado, 'Entrada': entrada_comprada
             })
-        elif contador == 1 and (entrada_vendida - row['Máxima'])<=0:
+        elif contador == 1 and ((entrada_vendida - row['Máxima'])<=0):
             resultado = (entrada_vendida - row['Fechamento']) * bet_size
             listadetrades.append({
                 'price': row['Fechamento'], 'time': idx, 'kind': 'sell',
                 'quantidade': bet_size, 'Resultado': resultado, 'Entrada': entrada_vendida
             })
-        elif contador == 2 and (entrada_vendida1 - row['Mínima']) >= 0:
+        elif contador == 2 and ((entrada_vendida1 - row['Mínima'])) >= 0:
             resultado = (entrada_vendida1 - row['Fechamento']) * bet_size
             listadetrades.append({
                 'price': row['Fechamento'], 'time': idx, 'kind': 'sell',
                 'quantidade': bet_size, 'Resultado': resultado, 'Entrada': entrada_vendida1
             })
-        elif contador == -2 and (entrada_comprada1 - row['Máxima']) <= 0:
+        elif contador == -2 and ((entrada_comprada1 - row['Máxima']) <= 0):
             resultado = (row['Fechamento'] - entrada_comprada1) * bet_size
             listadetrades.append({
                 'price': row['Fechamento'], 'time': idx, 'kind': 'buy',
