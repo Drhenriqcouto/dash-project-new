@@ -184,17 +184,13 @@ def rastrear():
 
 
 # Barra de navegação do menu
-menu = ["Home", "Relatório", "Monte a sua Operação", "Rastreador", "Análise"]
+menu = ["Home", "Monte a sua Operação", "Rastreador", "Análise"]
 opcao = st.sidebar.selectbox("Menu", menu)
 
 # Lógica do menu
 if opcao == "Home":
     st.title("Bem-vindo ao HC Trading")
     st.write(df_resultados)
-
-elif opcao == "Relatório":
-    st.title("Relatório de Resultados")
-    exibir_relatorio(df_resultados)
 
 elif opcao == "Monte a sua Operação":
     st.title("Monte a sua Operação")
