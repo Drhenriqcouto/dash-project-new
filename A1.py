@@ -30,7 +30,7 @@ def executar_operacao(valor, tipo_operacao, periodo, ativo_selecionado):
     elif tipo_operacao == "Compra na alta":
         contador = -2
 
-    bet_size = 1000
+    bet_size = 100
     listadetrades = []
 
     # Baixa os dados do ativo selecionado
@@ -38,10 +38,11 @@ def executar_operacao(valor, tipo_operacao, periodo, ativo_selecionado):
     data_atual = datetime.now().strftime('%Y-%m-%d')
     cotacoes = ativo.history(start='2022-01-01', end=data_atual) 
 
-    # Implementação do DataFrame
+    # Cria o DataFrame com os dados de cotações
     df = pd.DataFrame()
     df.index = cotacoes.index
     df['Abertura'] = cotacoes['Open']
+    df['Fechamento anterior']=cotacoes['Close'].shift(1)
     df['Fechamento'] = cotacoes['Close']
     df['Máxima'] = cotacoes['High']
     df['Mínima'] = cotacoes['Low']
@@ -53,10 +54,10 @@ def executar_operacao(valor, tipo_operacao, periodo, ativo_selecionado):
     df = df.tail(periodo).iterrows()
 
     for idx, row in df:
-        entrada_comprada = row['Abertura'] - (row['Abertura'] * valor)
-        entrada_vendida = row['Abertura'] + (row['Abertura'] * valor)
-        entrada_comprada1 = row['Abertura'] + (row['Abertura'] * valor)
-        entrada_vendida1 = row['Abertura'] - (row['Abertura'] * valor)
+        entrada_comprada = row['Fechamento anterior'] - (row['Fechamento anterior']*valor)
+        entrada_vendida = row['Fechamento anterior'] + (row['Fechamento anterior']*valor)
+        entrada_comprada1 = row['Fechamento anterior'] + (row['Fechamento anterior']*valor)
+        entrada_vendida1 = row['Fechamento anterior'] - (row['Fechamento anterior']*valor)
         
         # Lógica de operações baseada no tipo
         if contador == 0 and (entrada_comprada - row['Mínima']) >= 0:

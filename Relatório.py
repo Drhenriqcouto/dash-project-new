@@ -31,80 +31,7 @@ from A1 import executar_operacao
 # Carregando os resultados
 df_resultados = pd.read_excel('resultados_trading.xlsx')
 
-# Função para exibir o relatório dos melhores resultados
-def exibir_relatorio(df):
-    melhores_resultados = df[
-        (df['Índice Sharpe'] > 0.5) & (df['Ganho (%)']) >= 75 & (df['Quantidade de operações']) >= 50 
-    ]
-    pessimos_resultados = df[
-        (df['Índice Sharpe'] < - 0.5) & (df['Ganho (%)'] <= 25) & (df['Quantidade de operações'])>= 50 
-    ]
 
-    if not melhores_resultados.empty:
-        st.write("## Melhores Resultados")
-        
-        for _, row in melhores_resultados.iterrows():
-            percentual_acerto = row['Ganho (%)']
-            percentual_erro = 100 - percentual_acerto
-            tipo_operacao = ""
-            if row['Contador'] == 0:
-                tipo_operacao = "Compra na baixa"
-            elif row['Contador'] == 1:
-                tipo_operacao = "Venda na alta"
-            elif row['Contador'] == 2:
-                tipo_operacao = "Venda na baixa"
-            elif row['Contador'] == -2:
-                tipo_operacao = "Compra na alta"
-            
-            nivel_percentual = row['Valor'] * 100
-            
-            # Exibindo cada resultado com formatação mais profissional
-            st.markdown(f"""
-                ### Ativo: **{row['Nome do ativo']}**
-                
-                - **Índice Sharpe:** {row['Índice Sharpe']:.2f}
-                - **Ganho (%):** {percentual_acerto:.2f}%
-                - **Perda (%):** {percentual_erro:.2f}%
-                - **Tipo de operação:** {tipo_operacao}
-                - **Nível percentual de compra ou venda:** {nivel_percentual:.2f}%
-                
-                ---
-            """)
-    else:
-        st.write("Nenhum resultado atende aos critérios de seleção.")
-    
-    if not melhores_resultados.empty:
-        st.write("## Piores Resultados")
-        
-        for _, row in pessimos_resultados.iterrows():
-            percentual_acerto = row['Ganho (%)']
-            percentual_erro = 100 - percentual_acerto
-            tipo_operacao = ""
-            if row['Contador'] == 0:
-                tipo_operacao = "Compra na baixa"
-            elif row['Contador'] == 1:
-                tipo_operacao = "Venda na alta"
-            elif row['Contador'] == 2:
-                tipo_operacao = "Venda na baixa"
-            elif row['Contador'] == -2:
-                tipo_operacao = "Compra na alta"
-            
-            nivel_percentual = row['Valor'] * 100
-            
-            # Exibindo cada resultado com formatação mais profissional
-            st.markdown(f"""
-                ### Ativo: **{row['Nome do ativo']}**
-                
-                - **Índice Sharpe:** {row['Índice Sharpe']:.2f}
-                - **Ganho (%):** {percentual_acerto:.2f}%
-                - **Perda (%):** {percentual_erro:.2f}%
-                - **Tipo de operação:** {tipo_operacao}
-                - **Nível percentual de compra ou venda:** {nivel_percentual:.2f}%
-                
-                ---
-            """)
-    else:
-        st.write("Nenhum resultado atende aos critérios de seleção.")
 
 
 
@@ -130,7 +57,7 @@ def rastrear():
     data_atual = datetime.now().strftime('%Y-%m-%d')
     # Código 2 que faz o rastreamento dos ativos e cálculos
     # Definindo o intervalo de valores para a variável valor
-    valores = [round(x, 3) for x in np.arange(0, 0.051, 0.001)]
+    valores = [round(x, 3) for x in np.arange(0.01, 0.051, 0.001)]
     # Definindo os valores possíveis para a variável contador
     contadores = [0, 1, 2, -2]
     bet_size = 20
@@ -147,6 +74,7 @@ def rastrear():
         df = pd.DataFrame()
         df.index = cotacoes.index
         df['Abertura'] = cotacoes['Open']
+        df['Fechamento anterior']=cotacoes['Close'].shift(1)
         df['Fechamento'] = cotacoes['Close']
         df['Máxima'] = cotacoes['High']
         df['Mínima'] = cotacoes['Low']
@@ -155,28 +83,16 @@ def rastrear():
         df['A1'] = cotacoes['Close'].shift(1) - cotacoes['Open'].shift(1)
         df['A2'] = cotacoes['Close'].shift(2) - cotacoes['Open'].shift(2)
 
-        # Calcula as variações
-        Var_Fechamento = df['Fechamento'] / df['Fechamento'].shift(1) - 1
-        Var_Abertura = df['Abertura'] / df['Fechamento'].shift(1) - 1
-        Var_Maxima = df['Máxima'] / df['Fechamento'].shift(1) - 1
-        Var_Minima = df['Mínima'] / df['Fechamento'].shift(1) - 1
-
-        df1 = pd.DataFrame()
-        df1['Abertura'] = Var_Abertura
-        df1['Fechamento'] = Var_Fechamento
-        df1['Maxima'] = Var_Maxima
-        df1['Mínima'] = Var_Minima
-
         for valor in valores:
             for contador in contadores:
                 listadetrades = []
                 coma = df.tail(500).iterrows()
 
                 for idx, row in coma:
-                    entrada_comprada = row['Abertura'] - (row['Abertura'] * valor)
-                    entrada_vendida = row['Abertura'] + (row['Abertura'] * valor)
-                    entrada_comprada1 = row['Abertura'] + (row['Abertura'] * valor)
-                    entrada_vendida1 = row['Abertura'] - (row['Abertura'] * valor)
+                    entrada_comprada = row['Fechamento anterior'] - (row['Fechamento anterior']*valor)
+                    entrada_vendida = row['Fechamento anterior'] + (row['Fechamento anterior']*valor)
+                    entrada_comprada1 = row['Fechamento anterior'] + (row['Fechamento anterior']*valor)
+                    entrada_vendida1 = row['Fechamento anterior'] - (row['Fechamento anterior']*valor)
 
                     if contador == 0:
                         if ((entrada_comprada - row['Mínima']) >= 0):
