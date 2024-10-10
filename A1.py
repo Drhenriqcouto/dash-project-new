@@ -36,7 +36,7 @@ def executar_operacao(valor, tipo_operacao, periodo, ativo_selecionado):
     # Baixa os dados do ativo selecionado
     ativo = yf.Ticker(ativo_selecionado)
     data_atual = datetime.now().strftime('%Y-%m-%d')
-    cotacoes = ativo.history(start='2022-01-01', end=data_atual) 
+    cotacoes = ativo.history(start='2014-01-01', end=data_atual) 
 
     # Cria o DataFrame com os dados de cotações
     df = pd.DataFrame()
