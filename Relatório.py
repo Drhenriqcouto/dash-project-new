@@ -291,12 +291,14 @@ elif opcao == "Análise":
         ganho_medio = pd.DataFrame()
         ganho_medio['Ganho Médio'] = (resultado['Resultado'] / (resultado['price'] * 10))
         valor = round(ganho_medio['Ganho Médio'].mean() * 100, 2)
+        desvio_ganho = resultado['Resultado'].std()
         st.markdown(f"""
                 ### Dados gerais
             
                 - **Ganho médio:** {valor}%
                 - **Melhor dia: R$** {melhor_dia}
                 - **Pior dia: R$** {pior_dia}
+                - **Desvio: R$**{desvio_ganho}
                 
                 ---
             """)
