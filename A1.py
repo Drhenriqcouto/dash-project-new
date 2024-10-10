@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 
 # Função que executa a lógica de cálculo
 # Função que executa a lógica de cálculo
-def executar_operacao(valor, tipo_operacao, periodo, ativo_selecionado):
+def executar_operacao(valor, tipo_operacao, periodo, ativo_selecionado, sentido):
     # Define o contador com base no tipo de operação
     contador = 0
     if tipo_operacao == "Compra na baixa":
@@ -51,7 +51,10 @@ def executar_operacao(valor, tipo_operacao, periodo, ativo_selecionado):
     df['A1'] = cotacoes['Close'].shift(1) - cotacoes['Open'].shift(1)
     df['A2'] = cotacoes['Close'].shift(2) - cotacoes['Open'].shift(2)
 
-    df = df.tail(periodo).iterrows()
+    if sentido == "Dados antigos":
+        df = df.head(periodo).iterrows()
+    elif sentido == "Dados atuais":
+        df = df.tail(periodo).iterrows()
 
     for idx, row in df:
         entrada_comprada = row['Fechamento anterior'] - (row['Fechamento anterior']*valor)

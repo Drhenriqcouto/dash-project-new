@@ -264,12 +264,18 @@ elif opcao == "Análise":
         "Selecione o Tipo de Operação",
         ["Compra na baixa", "Venda na alta", "Venda na baixa", "Compra na alta"]
     )
+
+    # Campo para o usuário inserir qual o bloco de dados
+    sentido = st.selectbox(
+        "Selecione o quais os tipos de dados",
+        ["Dados antigos", "Dados atuais"]
+    )
    # Campo para o usuário inserir o período (número de dias)
     periodo = st.number_input("Período (número de dias)", min_value=1, step=1)
 
    
     if st.button("Executar Análise"):
-        resultado = executar_operacao(valor, tipo_operacao, periodo, ativo_selecionado)
+        resultado = executar_operacao(valor, tipo_operacao, periodo, ativo_selecionado,sentido)
         capital_inicial = 100
         # Exibir os resultados
         st.write("Resultado da Análise:")
