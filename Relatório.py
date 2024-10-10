@@ -291,7 +291,7 @@ elif opcao == "Análise":
         ganho_medio = pd.DataFrame()
         ganho_medio['Ganho Médio'] = (resultado['Resultado'] / (resultado['price'] * 10))
         valor = round(ganho_medio['Ganho Médio'].mean() * 100, 2)
-        desvio_ganho = resultado['Resultado'].std()
+        desvio_ganho = round(resultado['Resultado'].std(),2)
         st.markdown(f"""
                 ### Dados gerais
             
