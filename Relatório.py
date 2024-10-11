@@ -327,7 +327,7 @@ elif opcao == "Análise":
                 - **Ganho médio:** {valor}%
                 - **Melhor dia: R$** {melhor_dia}
                 - **Pior dia: R$** {pior_dia}
-                - **Desvio: R$**{desvio_ganho}
+                - **Oscilação do preço: R$** {desvio_ganho}
                 
                 ---
             """)
