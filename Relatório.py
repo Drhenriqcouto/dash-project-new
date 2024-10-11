@@ -264,16 +264,26 @@ elif opcao == "Análise":
     # Interface do Streamlit
     st.title("Monte a sua Análise")
 
-    # Carregar a lista de ativos
-    codigos = pd.read_csv('listadas.csv')
-    codigos['Simbol'] = codigos['Ticker'] + '.SA'
+    # Seleção do mercado
+    modalidade = st.selectbox(
+    "Selecione o mercado",["Ações", "Forex"])
+   
+    # Lista suspensa com os ativos disponíveis
+    if modalidade == "Ações":
+        listadas = pd.read_csv('listadas.csv')
+        listadas['codigos'] = listadas['Ticker'] + '.SA' 
+        codigos = listadas['codigos'].tolist()
+        valores = [round(x, 3) for x in np.arange(0.01, 0.051, 0.001)]
+    elif modalidade == "Forex":
+        listadas = pd.read_csv('listadas_forex.csv')
+        listadas['codigos'] = listadas['Ticker'] + '=X' 
+        codigos = listadas['codigos'].tolist()
+        valores = [round(x, 3) for x in np.arange(0.001, 0.0051, 0.0001)]
     
 
     # Campo para o usuário selecionar o ativo
     ativo_selecionado = st.selectbox(
-        "Selecione o Ativo",
-        codigos['Simbol']
-    )
+        "Selecione o Ativo", codigos)
 
     # Campo para o usuário digitar o valor percentual
     valor = st.number_input("Digite o valor percentual (ex: 0.02 para 2%)", min_value=0.0, format="%.4f")
