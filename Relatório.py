@@ -244,7 +244,7 @@ elif opcao == "Monte a sua Operação":
     if st.button("Calcular Preço"):
         if preco_atual > 0:
             preco_entrada = calcular_preco_entrada(preco_atual, percentual, tipo_entrada)
-            st.write(f"### Preço de Entrada Calculado: R$ {preco_entrada:.2f}")
+            st.write(f"### Preço de Entrada Calculado: R$ {preco_entrada:.5f}")
         else:
             st.write("Por favor, insira um preço atual válido.")
 
