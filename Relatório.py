@@ -230,7 +230,7 @@ elif opcao == "Monte a sua Operação":
         preco_abertura = 0.0  # Caso não tenha dados disponíveis
 
     # Campo para preencher o preço atual com o preço de fechamento do último dia
-    preco_atual = st.number_input("Preço Atual", value=float(preco_abertura), min_value=0.0, format="%.2f")
+    preco_atual = st.number_input("Preço Atual", value=float(preco_abertura), min_value=0.0, format="%.5f")
     
     # Lista suspensa para selecionar o percentual
     valores = [round(x, 3) for x in np.arange(0, 0.051, 0.001)]
