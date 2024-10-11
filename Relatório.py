@@ -210,7 +210,7 @@ elif opcao == "Monte a sua Operação":
         valores = [round(x, 3) for x in np.arange(0.01, 0.051, 0.001)]
     elif modalidade == "Forex":
         listadas = pd.read_csv('listadas_forex.csv')
-        listadas['codigos'] = listadas['Ticker'] + '=X' 
+        listadas['codigos'] = listadas['Ativo'] + '=X' 
         codigos = listadas['codigos'].tolist()
         valores = [round(x, 3) for x in np.arange(0.001, 0.0051, 0.0001)]
 
@@ -275,8 +275,8 @@ elif opcao == "Análise":
         codigos = listadas['codigos'].tolist()
         valores = [round(x, 3) for x in np.arange(0.01, 0.051, 0.001)]
     elif modalidade == "Forex":
-        listadas = pd.read_excel('listadas_forex.xlsx')
-        listadas['codigos'] = listadas['Ticker'] + '=X' 
+        listadas = pd.read_csv('listadas_forex.csv')
+        listadas['codigos'] = listadas['Ativo'] + '=X' 
         codigos = listadas['codigos'].tolist()
         valores = [round(x, 3) for x in np.arange(0.001, 0.0051, 0.0001)]
     
