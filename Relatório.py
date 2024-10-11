@@ -47,17 +47,21 @@ def calcular_preco_entrada(preco_atual, percentual, tipo_entrada):
 
 
 # Função para acionar o código 2 (rastreio)
-def rastrear():
-    listadas = pd.read_csv('listadas.csv')
+def rastrear(modalidade):
+    if modalidade == "Ações":
+        listadas = pd.read_csv('listadas.csv')
+        listadas['codigos'] = listadas['Ticker'] + '.SA' 
+        codigos = listadas['codigos'].tolist()
+        valores = [round(x, 3) for x in np.arange(0.01, 0.051, 0.001)]
+    elif modalidade == "Forex":
+        listadas = pd.read_csv('listadas_forex.csv')
+        listadas['codigos'] = listadas['Ticker'] + '=X' 
+        codigos = listadas['codigos'].tolist()
+        valores = [round(x, 3) for x in np.arange(0.001, 0.0051, 0.0001)]
+
     melhores = pd.read_excel('resultados_trading.xlsx')
-
-    listadas['codigos'] = listadas['Ticker'] + '.SA' 
-    codigos = listadas['codigos'].tolist()
-
     data_atual = datetime.now().strftime('%Y-%m-%d')
     # Código 2 que faz o rastreamento dos ativos e cálculos
-    # Definindo o intervalo de valores para a variável valor
-    valores = [round(x, 3) for x in np.arange(0.01, 0.051, 0.001)]
     # Definindo os valores possíveis para a variável contador
     contadores = [0, 1, 2, -2]
     bet_size = 20
@@ -68,7 +72,7 @@ def rastrear():
     # Itera sobre todos os ativos definidos em codigos
     for ativo in codigos:
         x = yf.Ticker(ativo)
-        cotacoes = x.history(start='2022-01-01', end=data_atual)
+        cotacoes = x.history(start='2014-01-01', end=data_atual)
 
         # Cria o DataFrame com os dados de cotações
         df = pd.DataFrame()
@@ -86,7 +90,7 @@ def rastrear():
         for valor in valores:
             for contador in contadores:
                 listadetrades = []
-                coma = df.tail(500).iterrows()
+                coma = df.iterrows()
 
                 for idx, row in coma:
                     entrada_comprada = row['Fechamento anterior'] - (row['Fechamento anterior']*valor)
@@ -194,9 +198,23 @@ if opcao == "Home":
 
 elif opcao == "Monte a sua Operação":
     st.title("Monte a sua Operação")
-    
+    # Seleção do mercado
+    modalidade = st.selectbox(
+    "Selecione o mercado",["Ações", "Forex"])
+   
     # Lista suspensa com os ativos disponíveis
-    ativo = st.selectbox("Selecione o Ativo", df_resultados['Nome do ativo'].unique())
+    if modalidade == "Ações":
+        listadas = pd.read_csv('listadas.csv')
+        listadas['codigos'] = listadas['Ticker'] + '.SA' 
+        codigos = listadas['codigos'].tolist()
+        valores = [round(x, 3) for x in np.arange(0.01, 0.051, 0.001)]
+    elif modalidade == "Forex":
+        listadas = pd.read_csv('listadas_forex.csv')
+        listadas['codigos'] = listadas['Ticker'] + '=X' 
+        codigos = listadas['codigos'].tolist()
+        valores = [round(x, 3) for x in np.arange(0.001, 0.0051, 0.0001)]
+
+    ativo = st.selectbox("Selecione o Ativo", codigos)
     
     # Ticker do ativo no formato esperado pelo yfinance
     ticker = ativo  # Supondo que o nome do ativo já seja o ticker. Ajuste se necessário.
@@ -235,10 +253,11 @@ elif opcao == "Monte a sua Operação":
 elif opcao == "Rastreador":
     st.title("Última Análise")
     st.dataframe(df_resultados)
+    modalidade = st.selectbox("Selecione o mercado", ["Ações", "Forex"])
 
     # Botão para realizar um novo rastreio
     if st.button("Novo Rastreio"):
-        rastrear()
+        rastrear(modalidade)
         st.experimental_rerun()
 
 elif opcao == "Análise":
