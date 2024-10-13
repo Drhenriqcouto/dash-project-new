@@ -270,7 +270,7 @@ elif opcao == "Análise":
    
     # Lista suspensa com os ativos disponíveis
     if modalidade == "Ações":
-        listadas = pd.read_csv('listadas.csv')
+        listadas = pd.read_csv('listadas.csv',sep=',')
         listadas['codigos'] = listadas['Ticker'] + '.SA' 
         codigos = listadas['codigos'].tolist()
         valores = [round(x, 3) for x in np.arange(0.01, 0.051, 0.001)]
