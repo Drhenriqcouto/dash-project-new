@@ -381,13 +381,13 @@ elif opcao == "Análise":
         resultado['dia'] = resultado['dia'].dt.strftime('%d')    # Dia do mês
 
         # Gráfico de barras - Distribuição mensal dos resultados
-        st.write("Performance mensal")
+        st.markdown("#Performance mensal")
         fig1, ax1 = plt.subplots(figsize=(20, 6))
         sns.barplot(x="data", y="ret_acumulado", data=resultado, ax=ax1)
         st.pyplot(fig1)
 
         # Mapa de calor
-        st.write("Mapa de calor")
+        st.markdown("#Mapa de calor")
         # Criar tabela pivô
         mapa = resultado.pivot_table(index="data", columns="dia", values="ret_acumulado")
         mapa.fillna(0, inplace=True)
