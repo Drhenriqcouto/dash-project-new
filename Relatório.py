@@ -394,5 +394,5 @@ elif opcao == "Análise":
 
         # Gerar o gráfico de mapa de calor
         fig2, ax2 = plt.subplots(figsize=(20, 8))
-        sns.heatmap(mapa, ax=ax2, annot=True, linewidths=1, cmap="magma", fmt=".1f")
+        sns.heatmap(mapa, ax2=ax2, annot=True, linewidths=1, cmap="magma", fmt=".1f")
         st.pyplot(fig2)
