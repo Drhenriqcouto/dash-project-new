@@ -24,7 +24,7 @@ import streamlit as st
 import os
 import csv
 from A1 import executar_operacao
-
+import seaborn as sns
 
 
 
@@ -371,3 +371,22 @@ elif opcao == "Análise":
         resultado['underwater'] = resultado['ret_acumulado'] < resultado['ret_acumulado'].cummax()
         periodo_drawdown = round(resultado['underwater'].sum() / 8, 2)
         st.write(f"Período de drawdown: {periodo_drawdown}")
+
+        #Distribuição mensal dos resultados
+        # Converter a coluna 'data' para o tipo datetime
+        resultado['data'] = pd.to_datetime(resultado['time'])
+        resultado['dia'] = pd.to_datetime(resultado['time'])
+
+        # Substituir a coluna 'data' pelo nome do mês
+        resultado['data'] = resultado['data'].dt.strftime('%b')
+        resultado['dia'] = resultado['dia'].dt.strftime('%d')
+        fig1, ay = plt.subplots(figsize =(20,6))
+        sns.barplot(x="data",y="ajuste_resultado",data=resultado)
+        st.pyplot(fig1)
+
+        #Mapeamento
+        mapa = resultado.pivot_table(index = "data", columns = "dia", values="ret_acumulado")
+        mapa.fillna(0,inplace=True)
+        fig2, ax = plt.subplots(figsize=(20,8))
+        sns.heatmap(mapa,ax=ax,annot = True,linewidths=1,cmap="magma")
+        st.pyplot(fig2)
