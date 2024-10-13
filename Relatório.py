@@ -372,23 +372,27 @@ elif opcao == "Análise":
         periodo_drawdown = round(resultado['underwater'].sum() / 8, 2)
         st.write(f"Período de drawdown: {periodo_drawdown}")
 
-        #Distribuição mensal dos resultados
-        # Converter a coluna 'data' para o tipo datetime
+        # Converter a coluna 'time' para o tipo datetime
         resultado['data'] = pd.to_datetime(resultado['time'])
         resultado['dia'] = pd.to_datetime(resultado['time'])
 
-        # Substituir a coluna 'data' pelo nome do mês
-        resultado['data'] = resultado['data'].dt.strftime('%b')
-        resultado['dia'] = resultado['dia'].dt.strftime('%d')
+        # Substituir a coluna 'data' pelo nome do mês e a coluna 'dia' pelo dia do mês
+        resultado['data'] = resultado['data'].dt.strftime('%b')  # Nome do mês abreviado
+        resultado['dia'] = resultado['dia'].dt.strftime('%d')    # Dia do mês
+
+        # Gráfico de barras - Distribuição mensal dos resultados
         st.write("Performance mensal")
-        fig1, ay = plt.subplots(figsize =(20,6))
-        sns.barplot(x="data",y="ajuste_resultado",data=resultado)
+        fig1, ax1 = plt.subplots(figsize=(20, 6))
+        sns.barplot(x="data", y="ajuste_resultado", data=resultado, ax=ax1)
         st.pyplot(fig1)
 
+        # Mapa de calor
         st.write("Mapa de calor")
-        #Mapeamento
-        mapa = resultado.pivot_table(index = "data", columns = "dia", values="ret_acumulado")
-        mapa.fillna(0,inplace=True)
-        fig2, az = plt.subplots(figsize=(20,8))
-        sns.heatmap(mapa,az=az,annot = True,linewidths=1,cmap="magma")
+        # Criar tabela pivô
+        mapa = resultado.pivot_table(index="data", columns="dia", values="ret_acumulado")
+        mapa.fillna(0, inplace=True)
+
+        # Gerar o gráfico de mapa de calor
+        fig2, ax2 = plt.subplots(figsize=(20, 8))
+        sns.heatmap(mapa, ax=ax2, annot=True, linewidths=1, cmap="magma")
         st.pyplot(fig2)
