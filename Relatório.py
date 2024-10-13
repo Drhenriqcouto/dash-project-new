@@ -403,7 +403,6 @@ elif opcao == "Análise":
         mapa = resultado.pivot_table(index="dia", values="ajuste_resultado", aggfunc="sum")
         fig3, ax3 = plt.subplots(figsize=(8, 8))
         sns.heatmap(mapa, ax=ax3, annot=True, linewidths=4, cmap="viridis", fmt=".1f")
-        plt.gca().set_facecolor('none')
         st.pyplot(fig3)
 
        
