@@ -370,7 +370,7 @@ elif opcao == "Análise":
         # Calculando o período de drawdown
         resultado['underwater'] = resultado['ret_acumulado'] < resultado['ret_acumulado'].cummax()
         periodo_drawdown = round(resultado['underwater'].sum() / 8, 2)
-        st.write(f"Período de drawdown: {periodo_drawdown}")
+        st.markdown(f"""### Período de drawdown: {periodo_drawdown}""")
 
         # Converter a coluna 'time' para o tipo datetime
         resultado['data'] = pd.to_datetime(resultado['time'])
@@ -381,13 +381,13 @@ elif opcao == "Análise":
         resultado['dia'] = resultado['dia'].dt.strftime('%d')    # Dia do mês
 
         # Gráfico de barras - Distribuição mensal dos resultados
-        st.markdown("#Performance mensal")
+        st.markdown(f"""### Performance mensal""")
         fig1, ax1 = plt.subplots(figsize=(20, 6))
         sns.barplot(x="data", y="ret_acumulado", data=resultado, ax=ax1)
         st.pyplot(fig1)
 
         # Mapa de calor
-        st.markdown("#Mapa de calor")
+        st.markdown(f"""### Mapa de calor""")
         # Criar tabela pivô
         mapa = resultado.pivot_table(index="data", columns="dia", values="ret_acumulado")
         mapa.fillna(0, inplace=True)
