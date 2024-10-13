@@ -19,3 +19,4 @@ openpyxl
 datetime
 matplotlib
 streamlit==1.38.0
+seaborn
