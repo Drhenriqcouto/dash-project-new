@@ -55,7 +55,7 @@ def rastrear(modalidade):
         valores = [round(x, 3) for x in np.arange(0.01, 0.051, 0.001)]
     elif modalidade == "Forex":
         listadas = pd.read_csv('listadas_forex.csv')
-        listadas['codigos'] = listadas['Ticker'] + '=X' 
+        listadas['codigos'] = listadas['Ativo'] + '=X' 
         codigos = listadas['codigos'].tolist()
         valores = [round(x, 3) for x in np.arange(0.001, 0.0051, 0.0001)]
 
@@ -270,7 +270,7 @@ elif opcao == "Análise":
    
     # Lista suspensa com os ativos disponíveis
     if modalidade == "Ações":
-        listadas = pd.read_csv('listadas.csv',sep=',')
+        listadas = pd.read_csv('listadas.csv')
         listadas['codigos'] = listadas['Ticker'] + '.SA' 
         codigos = listadas['codigos'].tolist()
         valores = [round(x, 3) for x in np.arange(0.01, 0.051, 0.001)]
