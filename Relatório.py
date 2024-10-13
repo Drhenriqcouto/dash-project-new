@@ -390,5 +390,5 @@ elif opcao == "Análise":
         mapa = resultado.pivot_table(index = "data", columns = "dia", values="ret_acumulado")
         mapa.fillna(0,inplace=True)
         fig2, az = plt.subplots(figsize=(20,8))
-        sns.heatmap(mapa,ax=ax,annot = True,linewidths=1,cmap="magma")
+        sns.heatmap(mapa,az=az,annot = True,linewidths=1,cmap="magma")
         st.pyplot(fig2)
