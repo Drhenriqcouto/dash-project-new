@@ -379,17 +379,18 @@ elif opcao == "Análise":
         # Substituir a coluna 'data' pelo nome do mês e a coluna 'dia' pelo dia do mês
         resultado['data'] = resultado['data'].dt.strftime('%b')  # Nome do mês abreviado
         resultado['dia'] = resultado['dia'].dt.strftime('%d')    # Dia do mês
+        resultado['ajuste_resultado'] = resultado['Resultado']*10
 
         # Gráfico de barras - Distribuição mensal dos resultados
         st.markdown(f"""### Performance mensal""")
         fig1, ax1 = plt.subplots(figsize=(20, 6))
-        sns.barplot(x="data", y="ret_acumulado", data=resultado, ax=ax1)
+        sns.barplot(x="data", y="ajuste_resultado", data=resultado, ax=ax1)
         st.pyplot(fig1)
 
         # Mapa de calor
         st.markdown(f"""### Mapa de calor""")
         # Criar tabela pivô
-        mapa = resultado.pivot_table(index="data", columns="dia", values="ret_acumulado")
+        mapa = resultado.pivot_table(index="data", columns="dia", values="ajuste_resultado")
         mapa.fillna(0, inplace=True)
 
         # Gerar o gráfico de mapa de calor
