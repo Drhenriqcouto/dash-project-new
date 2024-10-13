@@ -383,7 +383,7 @@ elif opcao == "Análise":
         # Gráfico de barras - Distribuição mensal dos resultados
         st.write("Performance mensal")
         fig1, ax1 = plt.subplots(figsize=(20, 6))
-        sns.barplot(x="data", y="ajuste_resultado", data=resultado, ax=ax1)
+        sns.barplot(x="data", y="ret_acumulado", data=resultado, ax=ax1)
         st.pyplot(fig1)
 
         # Mapa de calor
