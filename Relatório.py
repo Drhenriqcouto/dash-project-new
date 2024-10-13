@@ -388,7 +388,7 @@ elif opcao == "Análise":
         st.pyplot(fig1)
 
         # Mapa de calor
-        st.markdown(f"""### Mapa de calor""")
+        st.markdown(f"""### Mapa de calor (Média sobre os dias)""")
         # Criar tabela pivô
         mapa = resultado.pivot_table(index="data", columns="dia", values="ajuste_resultado")
         mapa.fillna(0, inplace=True)
@@ -397,3 +397,12 @@ elif opcao == "Análise":
         fig2, ax2 = plt.subplots(figsize=(20, 8))
         sns.heatmap(mapa, ax=ax2, annot=True, linewidths=1, cmap="magma", fmt=".1f")
         st.pyplot(fig2)
+
+        # Mapa de calor
+        st.markdown(f"""### Mapa de calor (Resultado acumulado)""")
+        mapa = resultado.pivot_table(index="dia", values="ajuste_resultado", aggfunc="sum")
+        fig3, ax3 = plt.subplots(figsize=(20, 8))
+        sns.heatmap(mapa, ax=ax3, annot=True, linewidths=1, cmap="magma", fmt=".1f")
+        st.pyplot(fig3)
+
+       
