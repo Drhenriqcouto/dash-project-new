@@ -401,7 +401,7 @@ elif opcao == "Análise":
         # Mapa de calor
         st.markdown(f"""### Mapa de calor (Resultado acumulado)""")
         mapa = resultado.pivot_table(index="dia", values="ajuste_resultado", aggfunc="sum")
-        fig3, ax3 = plt.subplots(figsize=(20, 8))
+        fig3, ax3 = plt.subplots(figsize=(8, 8))
         sns.heatmap(mapa, ax=ax3, annot=True, linewidths=1, cmap="magma", fmt=".1f")
         st.pyplot(fig3)
 
