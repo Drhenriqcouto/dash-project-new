@@ -351,7 +351,7 @@ elif opcao == "Análise":
 
         # Avaliação da estratégia
         resultado['ret_acumulado'] = resultado['Resultado'].cumsum()
-        st.write("Gráfico de Retorno Acumulado:")
+        st.markdown(f"""### Gráfico de Retorno Acumulado:""")
         st.line_chart(resultado['ret_acumulado'])
 
         # DrawDown
