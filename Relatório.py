@@ -380,13 +380,15 @@ elif opcao == "Análise":
         # Substituir a coluna 'data' pelo nome do mês
         resultado['data'] = resultado['data'].dt.strftime('%b')
         resultado['dia'] = resultado['dia'].dt.strftime('%d')
+        st.write("Performance mensal")
         fig1, ay = plt.subplots(figsize =(20,6))
         sns.barplot(x="data",y="ajuste_resultado",data=resultado)
         st.pyplot(fig1)
 
+        st.write("Mapa de calor")
         #Mapeamento
         mapa = resultado.pivot_table(index = "data", columns = "dia", values="ret_acumulado")
         mapa.fillna(0,inplace=True)
-        fig2, ax = plt.subplots(figsize=(20,8))
+        fig2, az = plt.subplots(figsize=(20,8))
         sns.heatmap(mapa,ax=ax,annot = True,linewidths=1,cmap="magma")
         st.pyplot(fig2)
