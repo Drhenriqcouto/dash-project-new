@@ -383,7 +383,7 @@ elif opcao == "Análise":
         # Gráfico de barras - Distribuição mensal dos resultados
         st.markdown(f"""### Performance mensal""")
         fig1, ax1 = plt.subplots(figsize=(20, 6))
-        sns.barplot(x="data", y="ret_acumulado", data=resultado, ax1=ax1)
+        sns.barplot(x="data", y="ret_acumulado", data=resultado, ax1=ax)
         st.pyplot(fig1)
 
         # Mapa de calor
@@ -394,5 +394,5 @@ elif opcao == "Análise":
 
         # Gerar o gráfico de mapa de calor
         fig2, ax2 = plt.subplots(figsize=(20, 8))
-        sns.heatmap(mapa, ax2=ax2, annot=True, linewidths=1, cmap="magma", fmt=".1f")
+        sns.heatmap(mapa, ax2=ax, annot=True, linewidths=1, cmap="magma", fmt=".1f")
         st.pyplot(fig2)
