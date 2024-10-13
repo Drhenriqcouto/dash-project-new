@@ -389,7 +389,7 @@ elif opcao == "Análise":
         # Mapa de calor
         st.markdown(f"""### Mapa de calor""")
         # Criar tabela pivô
-        mapa = resultado.pivot_table(index="data", columns="dia", values="ret_acumulado")
+        mapa = resultado.pivot_table(index="data", columns="dia", values="Resultado")
         mapa.fillna(0, inplace=True)
 
         # Gerar o gráfico de mapa de calor
