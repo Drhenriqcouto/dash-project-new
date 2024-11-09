@@ -288,6 +288,9 @@ elif opcao == "Análise":
     # Campo para o usuário digitar o valor percentual
     valor = st.number_input("Digite o valor percentual (ex: 0.02 para 2%)", min_value=0.0, format="%.4f")
 
+    # Campo para o usuário digitar o valor percentual
+    lote = st.number_input("Digite o tamanho do lote", min_value=1)
+
     # Campo para o usuário selecionar o tipo de operação
     tipo_operacao = st.selectbox(
         "Selecione o Tipo de Operação",
@@ -304,7 +307,7 @@ elif opcao == "Análise":
 
    
     if st.button("Executar Análise"):
-        resultado = executar_operacao(valor, tipo_operacao, periodo, ativo_selecionado,sentido)
+        resultado = executar_operacao(valor, lote,tipo_operacao, periodo, ativo_selecionado,sentido)
         capital_inicial = 100
         # Exibir os resultados
         st.write("Resultado da Análise:")
