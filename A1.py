@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 
 # Função que executa a lógica de cálculo
 # Função que executa a lógica de cálculo
-def executar_operacao(valor, lote,tipo_operacao, periodo, ativo_selecionado, sentido):
+def executar_operacao(valor, lote, tipo_operacao, periodo, ativo_selecionado, sentido):
     # Define o contador com base no tipo de operação
     contador = 0
     if tipo_operacao == "Compra na baixa":

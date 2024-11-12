@@ -307,7 +307,7 @@ elif opcao == "Análise":
 
    
     if st.button("Executar Análise"):
-        resultado = executar_operacao(valor, lote,tipo_operacao, periodo, ativo_selecionado,sentido)
+        resultado = executar_operacao(valor, lote, tipo_operacao, periodo, ativo_selecionado,sentido)
         capital_inicial = 100
         # Exibir os resultados
         st.write("Resultado da Análise:")
