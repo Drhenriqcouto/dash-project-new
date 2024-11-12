@@ -314,7 +314,7 @@ elif opcao == "Análise":
         st.dataframe(resultado)
 
         # Calcular e exibir o pior dia
-        pior_dia = resultado['Resultado'].min()
+        pior_dia = round(resultado['Resultado'].min(), 2)
 
         # Calcular e exibir o melhor dia
         melhor_dia = round(resultado['Resultado'].max(), 2)
